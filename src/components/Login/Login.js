@@ -217,7 +217,7 @@ class Login extends Component{
                                 :
                                 <ActivityIndicator style={{justifyContent:'center',padding:17}} animating={this.props.authenticationReducer.isLoading}/>
                                 }
-                            </TouchableOpacity>
+                            </TouchableOpacity> 
                         </Animated.View>
                         <Animated.View style={{
                              marginLeft:10,
