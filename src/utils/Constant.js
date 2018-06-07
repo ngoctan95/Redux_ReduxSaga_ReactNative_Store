@@ -1,0 +1,1 @@
+export const surl = "https://www.json-generator.com/api/json/get/cebogTFCcy?indent=2"
