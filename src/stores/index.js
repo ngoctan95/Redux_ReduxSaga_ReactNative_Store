@@ -1,4 +1,6 @@
 import AuthenticationReducer from '../reducers/AuthenticationReducer';
+import SignUpReducer from '../reducers/SignUpReducer';
+
 import firebase from 'firebase';
 import createSagaMiddleware from 'redux-saga';
 import {
@@ -7,7 +9,7 @@ import {
     call
 } from 'redux-saga/effects';
 import logger from 'redux-logger';
-import { compose, applyMiddleware,combineReducer,createStore, combineReducers } from 'redux';
+import { compose, applyMiddleware,createStore, combineReducers } from 'redux';
 import Sagas from '../sagas/index'
 
 /**Middleware */
@@ -30,7 +32,9 @@ const createStoreWithFirebase=compose(applyMiddleware(...middleWare))(createStor
 
 /**Combine reducers to one */
 let rootReducer=combineReducers({
+    signUpReducer:SignUpReducer,
     authenticationReducer:AuthenticationReducer,
+   
 })
 
 const initialState={};

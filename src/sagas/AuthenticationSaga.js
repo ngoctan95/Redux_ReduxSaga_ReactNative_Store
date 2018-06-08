@@ -8,7 +8,7 @@ import * as actions from '../actions/index';
 export function* watchAuthenAsync(action){
     console.log(action);
     try{
-        yield put(actions.loadingLoginRequest());
+        yield put(actions.loadingRequest());
         let signinResponse = yield call(requestAPI.getAuthenticationSignIn,action.email,action.password)
         
         yield put(actions.loginSuccess(signinResponse))

@@ -2,5 +2,11 @@ export {
     loginRequest,
     loginSuccess,
     loginFail,
-    loadingLoginRequest
+    loadingRequest
 } from './Authentication';
+
+export {
+    signUpRequest,
+    signUpFail,
+    signUpSuccess
+} from './SignUp';

@@ -16,7 +16,7 @@ export default (state = INITSTATE,action)=>{
                 password:action.password,
             }
         }
-        case actions.LOADING_LOGIN_REQUEST:{
+        case actions.LOADING_REQUEST:{
             return{
                 isLoading:action.isLoading,
             }

@@ -1,6 +1,6 @@
 import {
     LOGIN_REQUEST,
-    LOADING_LOGIN_REQUEST,
+    LOADING_REQUEST,
     LOGIN_SUCCESS,
     LOGIN_FAIL,
 
@@ -25,9 +25,9 @@ export const loginSuccess=(data)=>{
         data
     }
 };
-export const loadingLoginRequest=(isLoading)=>{
-    return{
-        type:LOADING_LOGIN_REQUEST,
+export const loadingRequest=(isLoading)=>{
+    return{ 
+        type:LOADING_REQUEST,
         isLoading:true
     }
 }
@@ -39,15 +39,15 @@ export const loginFail=(error)=>{
 };
 
 /**Logout section */
-export const logoutRequest=(token)=>{
-    return {
-        type:LOGOUT_REQUEST,
-        token
-    }
-};
-export const logoutSuccess=({res})=>{
-    return {
-        type:LOGOUT_SUCCESS,
-        res
-    }
-}
+// export const logoutRequest=(token)=>{
+//     return {
+//         type:LOGOUT_REQUEST,
+//         token
+//     }
+// };
+// export const logoutSuccess=({res})=>{
+//     return {
+//         type:LOGOUT_SUCCESS,
+//         res
+//     }
+// }

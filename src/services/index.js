@@ -20,7 +20,7 @@ function request(url, method, isAsync){
 }
 /**Authorize firebase */
 function _getAuthenticationSignIn(username,password){
-    return new Promise((resolve,reject)=>{
+    return new Promise((resolve,reject)=>{ 
         firebase.auth().signInWithEmailAndPassword(username,password)
             .then(res=>{
                 return res;
@@ -35,9 +35,27 @@ function _getAuthenticationSignIn(username,password){
             })
     })
 }
+/**SignUp new account */
+function _signUpNewAccount(username,password){
+    return new Promise((resolve,reject)=>{
+        firebase.auth().createUserWithEmailAndPassword(username,password)
+            .then(res=>{
+                return res
+            })
+            .then(responseJson=>{
+                resolve(responseJson)
+            })
+            .catch(err=>{
+                reject(err)
+            })
+    })
+}
 export const requestAPI={
     getAuthenticationSignIn(username,password){
         return _getAuthenticationSignIn(username,password);
+    },
+    signUpNewAccount(username,password){
+        return _signUpNewAccount(username,password);
     },
     getProducts(){
         return request(surl,"GET",true);

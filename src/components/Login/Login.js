@@ -18,7 +18,7 @@ const {width,height} = Dimensions.get("window");
 import logo from '../../assets/images/future.png';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
-import * as actions from '../../actions/Authentication';
+import * as actions from '../../actions';
 import {connect} from 'react-redux';
 class Login extends Component{
     constructor(props){
@@ -28,7 +28,7 @@ class Login extends Component{
             isShowUser:false,
             isShowPass:false,
             isCreateAccount:false,
-            email:'tannn@nustechnology.com',
+            email:'tan@nustechnology.com',
             password:'12345x@X'
         }
     }
@@ -47,7 +47,21 @@ class Login extends Component{
             }
             //tannn@nustechnology.com
         }
+        if(nextProps.signUpReducer!=null){
+            const {email,password,error,userInfo}=nextProps.signUpReducer;
+            if(error!=null){
+                alert(error.message);
+            }
+            //tannn@nustechnology.com
+            if(userInfo!=null){
+                alert("Sign up successfully");
+                this.setState({
+                    isCreateAccount:false
+                })
+            }
+        }
     }
+    
     componentWillUpdate(nextProps){
         //console.log(nextProps);
     }
@@ -87,8 +101,12 @@ class Login extends Component{
         Animated.stagger(100,[animMarTopLogo,animVisibleUser,animVisiblePass,animBtnSignIn]).start();
     }
     _loginRequest=()=>{
-        console.log(this.state);
-        this.props.loginRequest(this.state.email,this.state.password);
+        // console.log(this.state);
+        // this.props.loginRequest(this.state.email,this.state.password);
+        this.props.navigation.navigate("MainScreen");
+    }
+    _signUpRequest=()=>{
+        this.props.signUpRequest(this.state.email,this.state.password);
     }
     _toggleIsSecurePass=()=>{
         this.setState({
@@ -102,8 +120,8 @@ class Login extends Component{
     ]
     render(){
         return(
-            <ScrollView>
-            <View style={styles.mainContainer}>
+            <ScrollView> 
+            <View style={styles.mainContainer}> 
                 <LinearGradient 
                         colors={['#EB8F70','#1F1505']} 
                         style={styles.linearGradient}>
@@ -210,9 +228,9 @@ class Login extends Component{
                             opacity:this.valBtnSignIn
                         }}>
                             <TouchableOpacity
-                                disabled={this.props.authenticationReducer.isLoading}
+                                disabled={this.props.authenticationReducer.isLoading && this.props.signUpReducer.isLoading}
                                 onPress={!this.state.isCreateAccount?this._loginRequest:this._signUpRequest}>
-                                {!this.props.authenticationReducer.isLoading?
+                                {!this.props.authenticationReducer.isLoading || !this.props.signUpReducer.isLoading?
                                 <Text style={styles.btnSignIn}>{this.state.isCreateAccount?"Sign Up":"Sign In"}</Text>
                                 :
                                 <ActivityIndicator style={{justifyContent:'center',padding:17}} animating={this.props.authenticationReducer.isLoading}/>
@@ -333,11 +351,12 @@ const styles=StyleSheet.create({
         marginTop:2
     }
 })
-const mapStateToProps=({state,authenticationReducer})=>{
+const mapStateToProps=({state,authenticationReducer,signUpReducer})=>{
     console.log("login",authenticationReducer);
     return {
         state,
-        authenticationReducer
+        authenticationReducer,
+        signUpReducer
     }
 }
 export default connect(mapStateToProps,actions)(Login);

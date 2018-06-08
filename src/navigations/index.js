@@ -1,10 +1,15 @@
 import {StackNavigator} from 'react-navigation';
 import LoginScreen from '../components/Login/Login';
 import SplashScreen from '../components/Splash/Splash';
+import MainScreen from '../components/Main/Main';
+import Icon from 'react-native-vector-icons/Ionicons';
+import React from 'react';
 import {
     Easing,
-    Animated
+    Animated,
+    TouchableOpacity
 } from 'react-native';
+
 let TransitionConfiguration = () => {
     return {
         screenInterpolator: (sceneProps) => {
@@ -46,6 +51,14 @@ export default StackNavigator({
         screen:LoginScreen,
         navigationOptions:{
             header:null, 
+        }
+    },
+    MainScreen:{
+        screen:MainScreen,
+        navigationOptions:{
+             header:null,
+            title:'Main',
+            // headerTrasnsparent:true,
         }
     }
 },
