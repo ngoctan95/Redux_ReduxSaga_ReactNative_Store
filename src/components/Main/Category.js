@@ -10,7 +10,8 @@ import {
     ListView,
     Image,
     TouchableOpacity,
-    Animated,Easing
+    Animated,Easing,
+    AsyncStorage
 } from 'react-native';
 import {
     connectInfiniteHits,
@@ -77,6 +78,8 @@ class Category extends Component{
         this.valAnimMainViewItem=new Animated.Value(0);
         this.valAnimImg =new Animated.Value(0);
         this.valAnimBtn=new Animated.Value(0);
+        // AsyncStorage.sa
+        console.log(this.props);
     }
     componentDidMount(){
         const animMainViewItem=Animated.timing(
@@ -102,9 +105,17 @@ class Category extends Component{
         )
         Animated.stagger(100,[animMainViewItem,animBtn,animImg]).start();
     }
+    _onCategoryPressed=(item)=>{
+        console.log(item);
+        let menu='{category:"';
+        menu=menu+item.label+'"'+"}";
+        // const menu =JSON.parse(string);
+        // console.log(menu);
+        this.props.refine(item.label);
+    }
     _renderItem=(item, sectionID, rowID, highlightRow)=>{
         return(
-            <TouchableOpacity style={styles.containerViewItem}>
+            <TouchableOpacity style={styles.containerViewItem} onPress={()=>this._onCategoryPressed(item)}>
                 <Animated.View style={{
                     flexDirection:'column',
                     padding:this.valAnimMainViewItem,
@@ -148,7 +159,7 @@ class Category extends Component{
         return(
             <ListView 
             // style={styles.mainContainerItem}
-            key={(item,index)=>index}
+                key={(item,index)=>index}
                 enableEmptySections={true}
                 renderRow={this._renderItem}
                 dataSource={ds.cloneWithRows(this.props.items)}/>

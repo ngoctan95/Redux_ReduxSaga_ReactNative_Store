@@ -30,11 +30,19 @@ class Main extends Component{
     constructor(props){
         super(props);
         this.state=({
-            searchState:this.props.searchState?this.props.searchState:{
-                menu:{category: "Decoration"}
-            },
+            searchState:this.props.searchState?this.props.searchState:{},
             endAnimatedView:false,
         })
+    }
+    _onSearchStateChange=(nextState)=>{
+        const newSearchState={...this.state.searchState,...nextState};
+        // console.log(this.state);
+        console.log(nextState);
+        var a=JSON.stringify(nextState);
+        this.setState({
+            searchState: {...this.state.searchState,...nextState},
+        })
+        console.log(this.state.searchState);
     }
     componentWillMount(){
         console.log("main",this.props);
@@ -55,12 +63,12 @@ class Main extends Component{
             })
         });
     }
-    componentWillUpdate(nextProps){
+    componentWillReceiveProps(nextProps){
         console.log(nextProps);
     }
     render(){
-        console.log(this.props);
-        console.log("state search",this.state.searchState);
+        // console.log(this.props);
+        // console.log("state search",this.state.searchState);
         return(
             <View style={styles.mainContainer}>
                 <Animated.View style={{
@@ -82,10 +90,12 @@ class Main extends Component{
                                 appId="latency"
                                 apiKey="6be0576ff61c053d5f9a3225e2a90f76"
                                 indexName="ikea"
+                                onSearchStateChange={this._onSearchStateChange}
                                 searchState={this.state.searchState}>
                                 {/* This make the sense for animated in sequence */}
                                 {this.state.endAnimatedView?
-                                <Category attribute="category" />:null
+                                <Category attribute="category" onSearchStateChange={this._onSearchStateChange}/>
+                                :null
                                 }
                                 <Hit />
                                 <VirtualRefinementList attribute="type"/>
