@@ -58,6 +58,7 @@ export default StackNavigator({
         navigationOptions:{
              header:null,
             title:'Main',
+            
             // headerTrasnsparent:true,
         }
     }

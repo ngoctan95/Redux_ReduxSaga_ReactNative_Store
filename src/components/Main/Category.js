@@ -17,9 +17,11 @@ import {
     connectInfiniteHits,
     connectStats,
     connectMenu,
-    connectRefinementList
+    connectRefinementList,
+    // connectHierarchicalMenu
 } from 'react-instantsearch/connectors';
 import Icon from 'react-native-vector-icons/Ionicons'
+// import {connectHierarchicalMenu} from 'react-instantsearch/src/connectors/connectHierarchicalMenu';
 const {width,height} =Dimensions.get("window");
 var imgList=[
     {
@@ -106,9 +108,9 @@ class Category extends Component{
         Animated.stagger(100,[animMainViewItem,animBtn,animImg]).start();
     }
     _onCategoryPressed=(item)=>{
-        console.log(item);
-        let menu='{category:"';
-        menu=menu+item.label+'"'+"}";
+        // console.log(item);
+        // let menu='{category:"';
+        // menu=menu+item.label+'"'+"}";
         // const menu =JSON.parse(string);
         // console.log(menu);
         this.props.refine(item.label);
@@ -157,12 +159,14 @@ class Category extends Component{
         });
         console.log(this.props);
         return(
+            
             <ListView 
-            // style={styles.mainContainerItem}
+            // style={{flex:0}}
                 key={(item,index)=>index}
                 enableEmptySections={true}
                 renderRow={this._renderItem}
                 dataSource={ds.cloneWithRows(this.props.items)}/>
+                // < VirtualHierachicalMenu />
         )
     }
 }
@@ -198,5 +202,5 @@ const styles=StyleSheet.create({
         
     }
 })
-
+// const VirtualHierachicalMenu=connectHierarchicalMenu(()=>null);
 export default connectMenu(Category);

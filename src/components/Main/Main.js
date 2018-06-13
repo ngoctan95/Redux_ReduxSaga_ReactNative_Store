@@ -19,11 +19,13 @@ import {
     connectSortBy,
     connectRange,
     connectCurrentRefinements,
+    connectHierarchicalMenu,
   } from 'react-instantsearch/connectors';
 import {InstantSearch} from 'react-instantsearch/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Category from './Category';
 import Hit from './Hit';
+import HierrachicalMenu from './Hierrachical';
 
 const {width,height} = Dimensions.get("window");
 class Main extends Component{
@@ -32,17 +34,25 @@ class Main extends Component{
         this.state=({
             searchState:this.props.searchState?this.props.searchState:{},
             endAnimatedView:false,
+            count:0,
+            isHitShow:false
         })
     }
     _onSearchStateChange=(nextState)=>{
         const newSearchState={...this.state.searchState,...nextState};
         // console.log(this.state);
-        console.log(nextState);
+        // console.log(nextState);
         var a=JSON.stringify(nextState);
         this.setState({
             searchState: {...this.state.searchState,...nextState},
+            isHitShow:true
         })
         console.log(this.state.searchState);
+    }
+    _onCount=(countTotal)=>{
+        this.setState({
+            count:countTotal
+        })
     }
     componentWillMount(){
         console.log("main",this.props);
@@ -64,10 +74,17 @@ class Main extends Component{
         });
     }
     componentWillReceiveProps(nextProps){
-        console.log(nextProps);
+        console.log("main_will_receive",nextProps);
+    }
+    _onPressIconLeftHeader=()=>{
+        this.setState({
+            isHitShow:!this.state.isHitShow,
+            endAnimatedView:!this.state.endAnimatedView
+        });
+        console.log(this.state);
     }
     render(){
-        // console.log(this.props);
+        console.log(this.state.searchState);
         // console.log("state search",this.state.searchState);
         return(
             <View style={styles.mainContainer}>
@@ -80,11 +97,19 @@ class Main extends Component{
                     justifyContent:'flex-start',
                     backgroundColor:'#6abd45',
                 }}>
-                    <TouchableOpacity style={{marginTop:Platform.OS==="ios"?34:0,marginLeft:10}}>
-                        <Icon name="ios-menu" size={25} style={{padding:10}}/>
+
+                    <TouchableOpacity style={{marginTop:Platform.OS==="ios"?34:0,marginLeft:10}}
+                        onPress={()=>{
+                            this.setState({ 
+                                isHitShow:!this.state.isHitShow,
+                                // endAnimatedView:!this.state.endAnimatedView
+                                })}
+                            }>
+                        <Icon name={!this.state.isHitShow?"ios-menu":"ios-backspace-outline"} size={25} style={{padding:10}}/>
                     </TouchableOpacity>
                     
                 </Animated.View>
+                <Text style={{color:'black'}}>{this.state.count}</Text>
                 <View style={styles.backgroundAnimated}>
                         <InstantSearch
                                 appId="latency"
@@ -92,13 +117,18 @@ class Main extends Component{
                                 indexName="ikea"
                                 onSearchStateChange={this._onSearchStateChange}
                                 searchState={this.state.searchState}>
-                                {/* This make the sense for animated in sequence */}
-                                {this.state.endAnimatedView?
+                                {this.state.endAnimatedView 
+                                &&
+                                    !this.state.isHitShow?
                                 <Category attribute="category" onSearchStateChange={this._onSearchStateChange}/>
-                                :null
+                                :
+                                <Hit _onCount={this._onCount} isHitShow={this.state.isHitShow}/>
                                 }
-                                <Hit />
+
+                                
                                 <VirtualRefinementList attribute="type"/>
+                                <VirtualMenu attribute="category" />
+                                />
                         </InstantSearch>
                     </View>
             </View>
@@ -114,12 +144,15 @@ const styles=StyleSheet.create({
         height:height*2
     },
     backgroundAnimated:{
-        flex:1,
+        // flex:1,
         position:'absolute',
+        // overflow:'hidden',
         top:75,
         bottom:0,
         borderRadius:10
     }
 })
 const VirtualRefinementList = connectRefinementList(() => null);
+const VirtualMenu=connectMenu(()=>null);
+// const VirtualHierachicalMenu=connectHierarchicalMenu(()=>null);
 export default Main;
